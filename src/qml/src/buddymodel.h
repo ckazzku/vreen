@@ -69,6 +69,7 @@ public:
     int count() const;
     virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     virtual int rowCount(const QModelIndex &parent) const;
+    virtual QHash<int, QByteArray> roleNames() const;
     void setFilterByName(const QString &filter);
     QString filterByName();
     void clear();

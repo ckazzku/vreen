@@ -34,9 +34,6 @@ BuddyModel::BuddyModel(QObject *parent) :
     m_friendsOnly(true),
     m_buddyComparator(BuddyModel::CompareType::comparator, Qt::AscendingOrder)
 {
-    auto roles = roleNames();
-    roles[ContactRole] = "contact";
-    setRoleNames(roles);
 }
 
 void BuddyModel::setRoster(Vreen::Roster *roster)
@@ -160,4 +157,13 @@ bool BuddyModel::checkContact(Vreen::Buddy *contact)
     if (!m_filterByName.isEmpty())
         return contact->name().contains(m_filterByName, Qt::CaseInsensitive);
     return true;
+}
+
+QHash<int, QByteArray> BuddyModel::roleNames() const
+{
+    QHash<int, QByteArray> roles = {
+        { ContactRole, "contact" }
+    };
+
+    return roles;
 }

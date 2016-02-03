@@ -55,6 +55,7 @@ public:
     void setContact(Vreen::Contact* arg);
     virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     virtual int rowCount(const QModelIndex &) const;
+    virtual QHash<int, QByteArray> roleNames() const;
     int count() const;
 public slots:
     Vreen::Reply *getPosts(int count = 25, int offset = 0, Vreen::WallSession::Filter filter = Vreen::WallSession::All);

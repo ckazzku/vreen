@@ -59,6 +59,7 @@ public:
     void setClient(QObject* arg);
     virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     virtual int rowCount(const QModelIndex &) const;
+    virtual QHash<int, QByteArray> roleNames() const;
     int count() const;
     int findNews(int id);
 public slots:

@@ -30,6 +30,7 @@
 #include <groupmanager.h>
 #include <QDateTime>
 #include <QNetworkReply>
+#include <QUrlQuery>
 
 namespace {
 
@@ -44,18 +45,6 @@ NewsFeedModel::NewsFeedModel(QObject *parent) :
     QAbstractListModel(parent),
     m_newsItemComparator(news_item_comparator, Qt::DescendingOrder)
 {
-    auto roles = roleNames();
-    roles[TypeRole] = "type";
-    roles[PostIdRole] = "postId";
-    roles[FromRole] = "from";
-    roles[DateRole] = "date";
-    roles[BodyRole] = "body";
-    roles[AttachmentsRole] = "attachments";
-    roles[LikesRole] = "likes";
-    roles[RepostsRole] = "reposts";
-    roles[CommentsRole] = "comments";
-    roles[OwnerRole] = "owner";
-    setRoleNames(roles);
 }
 
 QObject *NewsFeedModel::client() const
@@ -206,8 +195,8 @@ void NewsFeedModel::onAddLike(const QVariant &response)
     auto reply = Vreen::sender_cast<Vreen::Reply*>(sender());
     auto url = reply->networkReply()->url();
 
-    int postId = url.queryItemValue("post_id").toInt();
-    int retweet = url.queryItemValue("repost").toInt();
+    int postId = QUrlQuery(url).queryItemValue("post_id").toInt();
+    int retweet = QUrlQuery(url).queryItemValue("repost").toInt();
     auto map = response.toMap();
     int likes = map.value("likes").toInt();
     int reposts = map.value("reposts").toInt();
@@ -235,7 +224,7 @@ void NewsFeedModel::onDeleteLike(const QVariant &response)
     auto reply = Vreen::sender_cast<Vreen::Reply*>(sender());
     auto url = reply->networkReply()->url();
 
-    int postId = url.queryItemValue("post_id").toInt();
+    int postId = QUrlQuery(url).queryItemValue("post_id").toInt();
     int likes = response.toMap().value("likes").toInt();
     int index = findNews(postId);
     if (index != -1) {
@@ -274,3 +263,20 @@ Vreen::Contact *NewsFeedModel::findContact(int id) const
     return m_client.data()->contact(id);
 }
 
+QHash<int, QByteArray> NewsFeedModel::roleNames() const
+{
+    QHash<int, QByteArray> roles = {
+        { TypeRole, "type" },
+        { PostIdRole, "postId" },
+        { FromRole, "from" },
+        { DateRole, "date" },
+        { BodyRole, "body" },
+        { AttachmentsRole, "attachments" },
+        { LikesRole, "likes" },
+        { RepostsRole, "reposts" },
+        { CommentsRole, "comments" },
+        { OwnerRole, "owner" }
+    };
+
+    return roles;
+}

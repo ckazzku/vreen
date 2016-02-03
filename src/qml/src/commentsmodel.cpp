@@ -36,13 +36,6 @@ CommentsModel::CommentsModel(QObject *parent) :
     QAbstractListModel(parent),
     m_postId(0)
 {
-    auto roles = roleNames();
-    roles[BodyRole] = "body";
-    roles[FromRole] = "from";
-    roles[DateRole] = "date";
-    roles[IdRole] = "id";
-    roles[LikesRole] = "likes";
-    setRoleNames(roles);
 }
 
 Vreen::Contact *CommentsModel::contact() const
@@ -177,3 +170,15 @@ Vreen::Reply *CommentsModel::getComments(int count, int offset)
     return 0;
 }
 
+QHash<int, QByteArray> CommentsModel::roleNames() const
+{
+    QHash<int, QByteArray> roles = {
+        { BodyRole, "body" },
+        { FromRole, "from" },
+        { DateRole, "date" },
+        { IdRole, "id" },
+        { LikesRole, "likes" }
+    };
+
+    return roles;
+}

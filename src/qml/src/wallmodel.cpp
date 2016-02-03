@@ -42,20 +42,6 @@ QVariant get(Vreen::Client *client, int id)
 WallModel::WallModel(QObject *parent) :
     QAbstractListModel(parent)
 {
-    auto roles = roleNames();
-    roles[IdRole] = "postId";
-    roles[BodyRole] = "body";
-    roles[FromRole] = "from";
-    roles[OwnerRole] = "owner";
-    roles[SignerRole] = "signer";
-    roles[CopyTextRole] = "copyText";
-    roles[ToRole] = "to";
-    roles[DateRole] = "date";
-    roles[AttachmentsRole] = "attachments";
-    roles[LikesRole] = "likes";
-    roles[RepostsRole] = "reposts";
-    roles[CommentsRole] = "comments";
-    setRoleNames(roles);
 }
 
 Vreen::Contact *WallModel::contact() const
@@ -235,4 +221,24 @@ void WallModel::onPostLikeDeleted(int postId, int count)
         replacePost(id, post);
 
     }
+}
+
+QHash<int, QByteArray> WallModel::roleNames() const
+{
+    QHash<int, QByteArray> roles = {
+        { IdRole, "postId" },
+        { BodyRole, "body" },
+        { FromRole, "from" },
+        { OwnerRole, "owner" },
+        { SignerRole, "signer" },
+        { CopyTextRole, "copyText" },
+        { ToRole, "to" },
+        { DateRole, "date" },
+        { AttachmentsRole, "attachments" },
+        { LikesRole, "likes" },
+        { RepostsRole, "reposts" },
+        { CommentsRole, "comments" }
+    };
+
+    return roles;
 }
