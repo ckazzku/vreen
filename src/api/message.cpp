@@ -91,14 +91,14 @@ public:
 
 		int contactId = data.value("from_id").toInt();
 		if (contactId) {
-			bool isIncoming = (contactId == clientId);
+			bool isIncoming = (contactId != clientId);
             setFlag(Message::FlagOutbox, !isIncoming);
             if (isIncoming) {
-				fromId = clientId;
-                toId = 0;
-            } else {
 				fromId = contactId;
 				toId = clientId;
+            } else {
+            	fromId = clientId;
+                toId = 0;
             }
         } else {
             setFlag(Message::FlagOutbox, data.value("out").toBool());
